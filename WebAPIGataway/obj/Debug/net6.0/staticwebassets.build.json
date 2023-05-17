@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "yxhyNPnPXF0VFfjlN48ItK0RIcTAUfCWKIv1g/ssCmo=",
+  "Source": "WebAPIGataway",
+  "BasePath": "_content/WebAPIGataway",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "userapi": "StartDebugging",
+        "courseapi": "StartDebugging",
+        "webapigataway": "StartDebugging",
+        "authenticationmanager": "StartDebugging",
+        "authenticationapi": "StartDebugging"
+      }
+    }
+  }
+}

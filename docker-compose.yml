@@ -1,0 +1,114 @@
+version: '3.4'
+
+networks:
+  backend:
+
+services:
+
+  userdb:
+    container_name: userdb
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345#
+    networks:
+      - backend
+    ports:
+      - 18001:1433
+
+  coursedb:
+    container_name: coursedb
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345#
+    networks:
+      - backend
+    ports:
+      - 18002:1433
+
+
+  authdb:
+    container_name: authdb
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=password@12345#
+    networks:
+      - backend
+    ports:
+      - 18003:1433
+
+
+
+
+
+
+  userapi:
+    container_name: userapi
+    image: ${DOCKER_REGISTRY-}userapi
+    build:
+      context: .
+      dockerfile: UserAPI/Dockerfile
+    networks:
+     - backend
+    ports:
+      - 3002:80 
+    environment:
+      - DB_HOST=userdb
+      - DB_NAME=dms_user
+      - DB_SA_PASSWORD=password@12345#
+
+
+  courseapi:
+    container_name: courseapi
+    image: ${DOCKER_REGISTRY-}courseapi
+    build:
+      context: .
+      dockerfile: CourseAPI/Dockerfile
+    networks:
+     - backend
+    ports:
+      - 3003:80 
+
+    environment:
+      - DB_HOST=coursedb
+      - DB_NAME=dms_course
+      - DB_SA_PASSWORD=password@12345#
+ 
+  webapigataway:
+    container_name: api-gateway
+    image: ${DOCKER_REGISTRY-}webapigataway
+    build:
+      context: .
+      dockerfile: WebAPIGataway/Dockerfile
+    ports:
+      - 8001:80 
+    networks:
+     - backend
+ 
+
+  authenticationapi:
+    image: ${DOCKER_REGISTRY-}authenticationapi
+    build:
+      context: .
+      dockerfile: AuthenticationAPI/Dockerfile
+    ports:
+      - 3001:80 
+    environment:
+      - DB_HOST=coursedb
+      - DB_NAME=dms_course
+      - DB_SA_PASSWORD=password@12345#  
+    networks:
+     - backend
+
+
+
+  authenticationmanager:
+    container_name: authmanager
+                    
+    image: ${DOCKER_REGISTRY-}authenticationmanager
+    build:
+      context: .
+      dockerfile: AuthenticationManager/Dockerfile
+
